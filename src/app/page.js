@@ -1,6 +1,28 @@
 import Image from "next/image";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
+import { jsonLdScriptProps } from "react-schemaorg";
+import Script from "next/script";
+
+export const metadata = {
+  title: "Khasiat Jahe - Memperkuat Daya Tahan Tubuh | Produk Alami",
+  description: "Jahe merupakan rempah alami yang memperkuat daya tahan tubuh. Temukan manfaat jahe untuk imunitas, anti peradangan, pencernaan, kesehatan jantung, dan meredakan mual.",
+  keywords: ["jahe", "khasiat jahe", "manfaat jahe", "rempah alami", "daya tahan tubuh", "kesehatan"],
+  openGraph: {
+    title: "Khasiat Jahe - Memperkuat Daya Tahan Tubuh | Produk Alami",
+    description: "Temukan manfaat jahe untuk imunitas, anti peradangan, dan kesehatan lainnya",
+    images: [
+      {
+        url: "/ginger-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Jahe: Rempah Alami untuk Kesehatan",
+      }
+    ],
+    type: "website",
+    locale: "id_ID"
+  }
+};
 
 export default function Home() {
   let first_paragraph = `Jahe merupakan rempah alami yang memperkuat daya tahan tubuh Anda. Sejak zaman penjajahan, jahe telah menjadi salah satu rempah yang paling dicari. Khasiatnya yang luar biasa membuat jahe menjadi primadona di dunia pengobatan tradisional. Jahe juga dikenal memiliki sifat anti-inflamasi dan dapat membantu meredakan mual. Dapatkan sekarang.`;
@@ -51,60 +73,87 @@ export default function Home() {
     }
   ];
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": "Jahe",
+    "image": "/ginger-image.jpg",
+    "description": "Jahe merupakan rempah alami yang memperkuat daya tahan tubuh Anda. Khasiatnya yang luar biasa membantu meningkatkan imunitas dan meredakan berbagai keluhan kesehatan.",
+    "category": "Rempah Alami",
+    "offers": {
+      "@type": "Offer",
+      "availability": "https://schema.org/InStock"
+    }
+  };
+
   return (
     <>
-    <Navbar />
-    <div className="flex flex-col md:flex-row min-h-[70vh] p-4 md:p-6 max-w-7xl mx-auto">
-      {/* Left side - Product Image */}
-      <div className="w-full md:w-1/2 flex items-center justify-center p-2 md:p-4">
-        <div className="relative w-full h-[300px] md:h-[400px]">
-          <Image 
-            src="/ginger-image.jpg" 
-            alt={heading_product} 
-            fill
-            className="object-contain"
-            priority
-          />
-        </div>
-      </div>
-      
-      {/* Right side - Product Description */}
-      <div className="w-full md:w-1/2 flex flex-col justify-center p-2 md:p-4">
-        <h1 className="text-3xl md:text-4xl font-bold mb-4">{heading_product}</h1>
-        <p className="text-gray-700 mb-6">
-          {first_paragraph}
-        </p>
-        <p className="text-gray-700">
-          {second_paragraph}
-        </p>
-      </div>
-    </div>
-    {/* second page */}
-    <div className="bg-amber-50 py-16 px-4">
-      <div className="max-w-7xl mx-auto">
-        <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">5 Manfaat Utama Jahe</h2>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {benefits.map((benefit) => (
-            <div key={benefit.id} className="bg-white p-6 rounded-lg shadow-md flex flex-col items-center text-center">
-              <div className="bg-amber-100 p-4 rounded-full mb-4 animate-pulse hover:animate-ping delay-150 duration-300">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  {benefit.icon}
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold mb-2">{benefit.title}</h3>
-              <p className="text-gray-600">{benefit.description}</p>
+      <Script
+        id="product-jsonld"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <Navbar />
+      <main>
+        <section className="hero-section flex flex-col md:flex-row min-h-[70vh] p-4 md:p-6 max-w-7xl mx-auto">
+          {/* Left side - Product Image */}
+          <div className="w-full md:w-1/2 flex items-center justify-center p-2 md:p-4">
+            <div className="relative w-full h-[300px] md:h-[400px]">
+              <Image 
+                src="/ginger-image.jpg" 
+                alt="Rempah jahe alami untuk meningkatkan daya tahan tubuh" 
+                fill
+                className="object-contain"
+                priority
+                sizes="(max-width: 768px) 100vw, 50vw"
+              />
             </div>
-          ))}
-        </div>
+          </div>
+          
+          {/* Right side - Product Description */}
+          <div className="w-full md:w-1/2 flex flex-col justify-center p-2 md:p-4">
+            <h1 className="text-3xl md:text-4xl font-bold mb-4">{heading_product}</h1>
+            <p className="text-gray-700 mb-6">
+              {first_paragraph}
+            </p>
+            <p className="text-gray-700 mb-6">
+              {second_paragraph}
+            </p>
+            <Link href="#benefits" 
+              className="inline-block bg-amber-600 hover:bg-amber-700 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-300 self-start"
+              aria-label="Pelajari manfaat jahe lebih lanjut">
+              Lihat Manfaat
+            </Link>
+          </div>
+        </section>
         
-        <div className="text-center mt-12">
-          <Link href="#" className="inline-block bg-amber-600 hover:bg-amber-700 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-300">
-            Pelajari Lebih Lanjut
-          </Link>
-        </div>
-      </div>
-    </div>
+        {/* Benefits section */}
+        <section id="benefits" className="bg-amber-50 py-16 px-4">
+          <div className="max-w-7xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">5 Manfaat Utama Jahe</h2>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {benefits.map((benefit) => (
+                <article key={benefit.id} className="bg-white p-6 rounded-lg shadow-md flex flex-col items-center text-center">
+                  <div className="bg-amber-100 p-4 rounded-full mb-4 animate-pulse hover:animate-ping delay-150 duration-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                      {benefit.icon}
+                    </svg>
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2">{benefit.title}</h3>
+                  <p className="text-gray-600">{benefit.description}</p>
+                </article>
+              ))}
+            </div>
+            
+            <div className="text-center mt-12">
+              <Link href="/manfaat-jahe" className="inline-block bg-amber-600 hover:bg-amber-700 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-300">
+                Pelajari Lebih Lanjut
+              </Link>
+            </div>
+          </div>
+        </section>
+      </main>
     </>
   );
 }
